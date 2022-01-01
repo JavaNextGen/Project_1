@@ -26,12 +26,15 @@ public class AbstractReimbursement {
     private User author;
     private User resolver;
     private double amount;
+    
+    private String newAuthor;
+    private int newStatus;
 
     public AbstractReimbursement() {
         super();
     }
 
-    public AbstractReimbursement(int id, Status status, User author, User resolver, double amount) {
+   public AbstractReimbursement(int id, Status status, User author, User resolver, double amount) {
         super();
         this.id = id;
         this.status = status;
@@ -39,8 +42,83 @@ public class AbstractReimbursement {
         this.resolver = resolver;
         this.amount = amount;
     }
+    
+   public AbstractReimbursement(int id, int status, int author, int resolver, double amount) {
+         }
+   
+    public AbstractReimbursement(int id, int amount, String newAuthor) {
+    	this.amount=amount;
+    	this.newAuthor=newAuthor;
+    	this.id=id;
+		
+	}
 
-    public int getId() {
+    public AbstractReimbursement(double amount, String name,  int id) {
+    	//super();
+    	this.amount=amount;
+    	this.newAuthor=name;
+    	this.id=id;
+   	}
+
+    
+    public AbstractReimbursement(int id, String author, String Status, int amount) {
+		
+	}
+    
+  /*  
+    public AbstractReimbursement(int id, Status status, User author, User resolver, double amount) {
+        super();
+    }
+   */
+    
+    public AbstractReimbursement(int id, int newStatus, String newAuthor, double amount) {
+    this.id = id;
+    this.newStatus = newStatus;
+    this.newAuthor = newAuthor;
+    this.amount = amount;
+    }
+    
+    
+    
+    	
+  /* 
+   public AbstractReimbursement(int id, User author,  double amount) {
+  		super();
+  		this.id = id;
+  		this.author = author;
+  		this.amount = amount;
+  	}
+  */
+
+   public AbstractReimbursement(int id, User newAuthor,  double amount) {
+  	}
+   
+   public int getnewStatus() {
+	   return newStatus;
+   }
+    public void setnewStatus(int newStatus) {
+    	this.newStatus = newStatus;
+    }
+  
+   public void setnewAuthor(String newAuthor) {
+	   this. newAuthor = newAuthor;
+   }
+    
+   
+   public String getnewAuthor(){
+	   return newAuthor;
+   }
+   
+   
+    public AbstractReimbursement(int id, String status) {
+	
+	}
+
+	public AbstractReimbursement(int int1) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getId() {
         return id;
     }
 
@@ -52,7 +130,9 @@ public class AbstractReimbursement {
         return status;
     }
 
-    public void setStatus(Status status) {
+   
+
+	public void setStatus(Status status) {
         this.status = status;
     }
 
