@@ -38,7 +38,10 @@ public class AbstractUser {
         this.role = role;
     }
 
-    public int getId() {
+    public AbstractUser(String username, String password) {
+			}
+
+	public int getId() {
         return id;
     }
 
