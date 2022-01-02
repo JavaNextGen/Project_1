@@ -58,20 +58,23 @@ public class ReimbursementDAO {
     	   Connection conn = ConnectionFactory.getConnection();
     	   conn.setAutoCommit (false);
     	   
-           
-           String sql3 = "INSERT INTO ers_reimbursement_status(reimb_Status_id, reimb_Status )"
-     				+ "VALUES(?,?)";
-     				
-           PreparedStatement newUserSt2 = conn.prepareStatement(sql3);
-           
-           newUserSt2.setInt(1, reimbus_id );
-           newUserSt2.setString(2, "PENDING");
+          
           
     	   
           String sql2 = "INSERT INTO ers_reimbursement(reimb_id, reimb_type_id, reimb_author, reimb_amount )"
           				+ "VALUES(?, ?,?,?)";
           				
           PreparedStatement newUserSt = conn.prepareStatement(sql2);
+          
+          
+          
+          String sql3 = "INSERT INTO ers_reimbursement_status(reimb_Status_id, reimb_Status )"
+    				+ "VALUES(?,?)";
+    				
+          PreparedStatement newUserSt2 = conn.prepareStatement(sql3);
+          
+          newUserSt2.setInt(1, reimbus_id );
+          newUserSt2.setString(2, "PENDING");
           
           newUserSt.setInt(1, reimbus_id);
           newUserSt.setInt(2, typeId);
