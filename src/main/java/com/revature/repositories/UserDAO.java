@@ -4,7 +4,7 @@ import com.revature.models.User;
 
 import java.util.Optional;
 
-
+import com.revature.exceptions.UsernameNotUniqueException;
 import com.revature.models.AbstractUser;
 import com.revature.util.ConnectionFactory;
 
@@ -23,6 +23,8 @@ import java.util.Optional;
 
 public class UserDAO {
 
+	UsernameNotUniqueException unexc = new UsernameNotUniqueException();
+	
     /**
      * Should retrieve a User from the DB with the corresponding username or an empty optional if there is no match.
      */
@@ -58,7 +60,9 @@ public class UserDAO {
     					);
     				
     				userSelect.add(newSearchP);
-    			}
+
+    				}
+    						
     					///return null;
 
     		} catch (SQLException e) {
@@ -98,7 +102,6 @@ public class UserDAO {
 
    public List<User> getNewUsers()
    {
-
       try{
     	  Connection conn = ConnectionFactory.getConnection();
     	  
@@ -146,7 +149,7 @@ public class UserDAO {
     * ****************************
     */
    
-   public void registerNewUsers(User newUser, int userroleid, String role)
+   public void registerNewUsers(User newUser, int userroleid, String role) throws UsernameNotUniqueException
    {
 
       try{
@@ -154,7 +157,7 @@ public class UserDAO {
   	    conn.setAutoCommit(false);   
 
 
-        String sql3 = "INSERT INTO ers_users_role(ers_user_role_id, user_role) "
+        String sql3 = "INSERT INTO ers_user_roles(ers_user_role_id, user_role) "
         				+ " VALUES(?, ?);";
         				
         PreparedStatement newUserSt2 = conn.prepareStatement(sql3);
@@ -162,6 +165,8 @@ public class UserDAO {
         newUserSt2.setInt(1, userroleid);
         newUserSt2.setString(2, role);
         
+        newUserSt2.executeUpdate();
+
          String sql2 = "INSERT INTO ers_users(ers_user_id, ers_username,ers_password,"
         		 + "ers_first_name,ers_last_name, ers_email, " + 
         		 "  ers_role_id,  ers_address)"
@@ -170,29 +175,30 @@ public class UserDAO {
          
          PreparedStatement newUserSt = conn.prepareStatement(sql2);
  
-         newUserSt.setInt(1, newUser.getId());
+         newUserSt.setInt(1,  newUser.getId());
          newUserSt.setString(2, newUser.getUsername());
          newUserSt.setString(3, newUser.getPassword());
          newUserSt.setString(4, newUser.getFirstname());
          newUserSt.setString(5, newUser.getLastname());
          newUserSt.setString(6, newUser.getEmail());
-         newUserSt.setInt(7, newUser.getId());
+         newUserSt.setInt(7, userroleid);
          newUserSt.setString(8, newUser.getAddress());
 	 
 
          
          newUserSt.executeUpdate();
-         newUserSt2.executeUpdate();
          
          conn.commit();
-         System.out.println("New user " + newUser.getUsername().toUpperCase() + " was added to the database");
-         
-         }catch(Exception e) {
-        	
- 			e.printStackTrace();
+         System.out.println("New user " + newUser.getUsername() + " was added to the database");
+          
+         }catch(UsernameNotUniqueException une) {
+        	 throw new UsernameNotUniqueException();
+         } catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
          }
-      }
-
+      
    /*
     * ****************************
    * ****************************

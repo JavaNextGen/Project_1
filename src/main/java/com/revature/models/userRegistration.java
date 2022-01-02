@@ -46,21 +46,24 @@ public class userRegistration  {
       String address = newUserSc.nextLine();
      
       int userId = newUsrService.maximumUserId() + 1;
-
+System.out.println("user id =: "+ userId);
 
       System.out.println("Select  Role ID: ");
       System.out.println("1 for employee");
+      System.out.println("2 for finance manager");
 
       int roleId = newUserSc.nextInt();
     //  newUserSc.close();
       //  generate new user object
 String role = "";
+
       switch(roleId) {
       case 1:role = "Employee";
-      case 2: role = "Finance_Manager";	  
+      case 2: role = "Fin_Mgr1";
+    	  
       }
     //  System.out.println("newUser");
-	  User newUser = new User( username, password, firstname, lastname, email, roleId, address, userId);
+	  User newUser = new User( username, password, firstname, lastname, email, userId, address, userId);
 
       //create a new user for the service layer
       
