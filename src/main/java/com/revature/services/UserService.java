@@ -1,6 +1,9 @@
 package com.revature.services;
 
+import java.util.List;
 import java.util.Optional;
+
+import com.revature.models.AbstractUser;
 import com.revature.models.User;
 import com.revature.repositories.UserDAO;
 
@@ -30,12 +33,19 @@ public class UserService {
 		return Optional.empty();
 	}
 	
-	public void getUserRegistration(User newUser) {
+	public void getUserRegistration() {
 		newAdd.getNewUsers();		
 	}
 	
-	public void registerNewUsers(User newUser, int useroleid, String  role) {
-		newAdd.registerNewUsers(newUser, useroleid, role);
+	
+	
+	public List<User> getNewUsers() {
+		return newAdd.getNewUsers();		
+	}
+
+	
+	public void registerNewUsers(User newUser, AbstractUser newUsA, int useroleid, String  role) {
+		newAdd.registerNewUsers(newUser, newUsA, useroleid, role);
 	}
 	
 	public void AuthenticateUser(String name, String password) {
@@ -43,8 +53,8 @@ public class UserService {
 	}
 
 
-	public void searchUserByNames(String name) {
-		newAdd.searchUserByName(name);
+	public void getByUserName(String name) {
+		newAdd.getByUserName(name);
 	}
 	
 	public void searchUserByNamePassword( String name, String password ) {
@@ -59,7 +69,7 @@ public class UserService {
 		return newAdd.maximumUserId();
 	}
 
-	public int CheckUserRole(String name,  String password) {
+	public String CheckUserRole(String name,  String password) {
 		return newAdd.CheckUserRole(name, password);
 	}
 

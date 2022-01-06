@@ -63,26 +63,26 @@ public class welcomePage {
 
      String nameSearch = newSearch.authuenticateUser(userinputU, userinputP);
     
-      System.out.println(userinputU);
+      System.out.println(nameSearch);
 
       if(nameSearch.toUpperCase().equals(userinputU.toUpperCase())) {
           System.out.println("****************");
 
-  	  System.out.println(" Thanks for your patience," + nameSearch );
+  	  System.out.println(" Thanks for your patience, " + nameSearch );
       System.out.println("****************");
+  	  System.out.println("You may proceed " + nameSearch );
+      }
      
-     
-      int roleSearch =  newSearch.CheckUserRole(userinputU, userinputP);
-      switch(roleSearch) {
+      String roleSearch =  newSearch.CheckUserRole(userinputU, userinputP);
+      System.out.println("roleSearch");
+      
+      if(roleSearch.toUpperCase().equals("EMPLOYEE")) 
     
-     case 1:
     	newCheck.accessedByEmployee();
     	
-     case 2:
+        if(roleSearch.toUpperCase().equals("FIN_MNGR")) 
     	newCheck.accessedByManager();
    	
-         }
-      }
       
       
       System.out.println("DO YOU NEED ANYMORE HELP? ");
@@ -108,6 +108,8 @@ public class welcomePage {
       }
    }
    }
+
+   
 
 //+------------------------------------------------------------------+2
 

@@ -4,6 +4,7 @@ import com.revature.models.User;
 
 import java.util.Optional;
 
+import com.revature.exceptions.RegistrationUnsuccessfulException;
 import com.revature.exceptions.UsernameNotUniqueException;
 import com.revature.models.AbstractUser;
 import com.revature.util.ConnectionFactory;
@@ -122,6 +123,7 @@ public class UserDAO {
 
          while(userRs.next()) {
 
+        	 
             User newuserDetails =  new User(
             	
                  	 userRs.getString("ers_username"),
@@ -149,11 +151,12 @@ public class UserDAO {
     * ****************************
     */
    
-   public void registerNewUsers(User newUser, int userroleid, String role) throws UsernameNotUniqueException
+   public void registerNewUsers(User newUser, AbstractUser newUsA, int userroleid, String role) throws UsernameNotUniqueException
    {
 
       try{
     	  Connection conn = ConnectionFactory.getConnection();
+    	  
   	    conn.setAutoCommit(false);   
 
 
@@ -175,9 +178,9 @@ public class UserDAO {
          
          PreparedStatement newUserSt = conn.prepareStatement(sql2);
  
-         newUserSt.setInt(1,  newUser.getId());
-         newUserSt.setString(2, newUser.getUsername());
-         newUserSt.setString(3, newUser.getPassword());
+         newUserSt.setInt(1,  userroleid);
+         newUserSt.setString(2, newUsA.getUsername());
+         newUserSt.setString(3, newUsA.getPassword());
          newUserSt.setString(4, newUser.getFirstname());
          newUserSt.setString(5, newUser.getLastname());
          newUserSt.setString(6, newUser.getEmail());
@@ -205,8 +208,8 @@ public class UserDAO {
   */
 
 
-	public String authuenticateUser(String name, String password) {
-		String resultz = new String(); 
+	public String authuenticateUser(String name, String password) throws UsernameNotUniqueException {
+		String resultz = ""; 
 
 			try {
 			Connection conn2 = ConnectionFactory.getConnection();
@@ -214,24 +217,24 @@ public class UserDAO {
 			ResultSet rs = null;	
 			Statement statement = conn2.createStatement();
 			
-			String sql = "SELECT DISTINCT ers_username FROM ers_users " +
+			String sql = "SELECT ers_username FROM ers_users " +
 			"WHERE ers_username = '"+name+"' AND ers_password= '"+password+"';";		
 			
 			rs = statement.executeQuery(sql);	
 
 			while(rs.next()) {
+				
 				resultz = rs.getString("ers_username");
 			}
 	
 			return resultz;
 
-		} catch (SQLException e) {
+		} catch (UsernameNotUniqueException | SQLException e) {
+			throw new RegistrationUnsuccessfulException("verification Unsuccessful");
 			
-			System.out.println(" employees LOGIN details not found!");
-			e.printStackTrace();
 		}
+		//	return resultz;
 
-	return resultz;
 }
 
 
@@ -376,8 +379,8 @@ return resultz;
 }
 
 
-public int CheckUserRole(String name, String password) {
-	int resultz = 0; 
+public String CheckUserRole(String name, String password) throws UsernameNotUniqueException {
+	String resultz = ""; 
 
 		try {
 		Connection conn2 = ConnectionFactory.getConnection();
@@ -385,23 +388,22 @@ public int CheckUserRole(String name, String password) {
 		ResultSet rs = null;	
 		Statement statement = conn2.createStatement();
 		
-		String sql = "SELECT DISTINCT ers_role_id FROM ers_users " +
+		String sql = "SELECT ers_role FROM ers_user_roles full join ers_users on " +
+				" ers_user_roles.ers_user_role_id =  ers_users.ers_role_id  " +
 		"WHERE ers_username = '"+name+"' AND ers_password= '"+password+"';";		
 		
 		rs = statement.executeQuery(sql);	
 
 		while(rs.next()) {
-			resultz = rs.getInt("ers_role_id");
+			resultz = rs.getString("ers_role");
 		}
 
 		return resultz;
 
-	} catch (SQLException e) {
-		System.out.println("Something went wrong selecting employees!");
-		e.printStackTrace();
+	} catch (UsernameNotUniqueException | SQLException e) {
+		throw new UsernameNotUniqueException("Something went wrong selecting employees!");
+	
 	}
-
-return resultz;
 }
 
 
@@ -432,6 +434,11 @@ public int getUserRole(String username, String password) {
 	}
 
 return resultz;
+}
+
+public void getByUserName(String name) {
+	// TODO Auto-generated method stub
+	
 }
 
 }

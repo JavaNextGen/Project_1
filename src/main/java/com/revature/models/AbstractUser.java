@@ -39,6 +39,8 @@ public class AbstractUser {
     }
 
     public AbstractUser(String username, String password) {
+    	this.username=username;
+    	this.password=password;
 			}
 
 	public int getId() {
