@@ -66,8 +66,11 @@ public class ReimbursementService {
    AbstractReimbursement newAdd  = new AbstractReimbursement();
 
 
-   public void insertRemRq(double amount, int name, int typeId, int reimbus_id) {
-      newReDAO.insertRemRq(amount, name, typeId, reimbus_id);
+ //  public void insertRemRq(double amount, String username1, int reimbId, int reimbus_id) {
+
+   public void insertRemRq(AbstractReimbursement newAb) {
+	   
+      newReDAO.insertRemRq(newAb);
    }
 
 
@@ -88,11 +91,13 @@ public class ReimbursementService {
 	     return  newReDAO.GetReimbursementsAll();
 	   }
 
-  
 
    public int maximumReimbId() {
       return newReDAO.maximumReimbId();
    }
+
+
+
 
    
 

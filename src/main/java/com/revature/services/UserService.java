@@ -44,8 +44,8 @@ public class UserService {
 	}
 
 	
-	public void registerNewUsers(User newUser, AbstractUser newUsA, int useroleid, String  role) {
-		newAdd.registerNewUsers(newUser, newUsA, useroleid, role);
+	public void registerNewUsers(User newUser, AbstractUser newUsA, int useroleid, String  role, int rolz) {
+		newAdd.registerNewUsers(newUser, newUsA, useroleid, role, rolz);
 	}
 	
 	public void AuthenticateUser(String name, String password) {
@@ -68,6 +68,11 @@ public class UserService {
 	public int maximumUserId() {
 		return newAdd.maximumUserId();
 	}
+
+public int getUserId(String username, String password) {
+	return newAdd.getUserId(username, password);
+	
+}
 
 	public String CheckUserRole(String name,  String password) {
 		return newAdd.CheckUserRole(name, password);

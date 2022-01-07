@@ -27,14 +27,37 @@ public class AbstractReimbursement {
     private User resolver;
     private double amount;
     
-    private String newAuthor;
+    private int newAuthor;
     private int newStatus;
+    private int newid;
 
-    public AbstractReimbursement() {
-        super();
-    }
 
-   public AbstractReimbursement(int id, Status status, User author, User resolver, double amount) {
+
+   public int getNewAuthor() {
+		return newAuthor;
+	}
+
+	public void setNewAuthor(int newAuthor) {
+		this.newAuthor = newAuthor;
+	}
+
+	public int getNewStatus() {
+		return newStatus;
+	}
+
+	public void setNewStatus(int newStatus) {
+		this.newStatus = newStatus;
+	}
+
+	public int getNewid() {
+		return newid;
+	}
+
+	public void setNewid(int newid) {
+		this.newid = newid;
+	}
+
+public AbstractReimbursement(int id, Status status, User author, User resolver, double amount) {
         super();
         this.id = id;
         this.status = status;
@@ -46,13 +69,13 @@ public class AbstractReimbursement {
    public AbstractReimbursement(int id, int status, int author, int resolver, double amount) {
          }
    
-    public AbstractReimbursement(int id, int amount, String newAuthor) {
+    public AbstractReimbursement(int id, int amount, int newAuthor) {
     	this.amount=amount;
     	this.newAuthor=newAuthor;
     	this.id=id;
 		
 	}
-
+/*
     public AbstractReimbursement(double amount, String name,  int id) {
     	//super();
     	this.amount=amount;
@@ -60,21 +83,15 @@ public class AbstractReimbursement {
     	this.id=id;
    	}
 
+    */
+  
     
-    public AbstractReimbursement(int id, String author, String Status, int amount) {
-		
-	}
-    
-  /*  
-    public AbstractReimbursement(int id, Status status, User author, User resolver, double amount) {
-        super();
-    }
-   */
-    
-    public AbstractReimbursement(int id, int newStatus, String newAuthor, double amount) {
-    this.id = id;
+  
+  public AbstractReimbursement( double amount,  int newauthor , int newid, int newStatus) {
+    	super();
+    this.newid = newid;
     this.newStatus = newStatus;
-    this.newAuthor = newAuthor;
+    this.newAuthor = newauthor;
     this.amount = amount;
     }
     
@@ -100,12 +117,12 @@ public class AbstractReimbursement {
     	this.newStatus = newStatus;
     }
   
-   public void setnewAuthor(String newAuthor) {
+   public void setnewAuthor(int newAuthor) {
 	   this. newAuthor = newAuthor;
    }
     
    
-   public String getnewAuthor(){
+   public int getnewAuthor(){
 	   return newAuthor;
    }
    
@@ -116,6 +133,13 @@ public class AbstractReimbursement {
 
 	public AbstractReimbursement(int int1) {
 		// TODO Auto-generated constructor stub
+	}
+
+
+
+
+	public AbstractReimbursement() {
+	
 	}
 
 	public int getId() {

@@ -2,13 +2,16 @@ package com.revature.models;
 
 import java.util.Scanner;
 
+import com.revature.repositories.UserDAO;
 import com.revature.services.ReimbursementService;
 import com.revature.services.UserService;
 
 public class userReimbursement {
+	UserDAO newUDAO =new UserDAO();
 	
 	ReimbursementService newReS = new ReimbursementService();
 	UserService newUs = new UserService();
+	Reimbursement newRe = new Reimbursement();
 	//apply for reimbursement : lodging, travel, food, other;
 	
 	public void applyForReimbursement() {
@@ -20,6 +23,9 @@ public class userReimbursement {
 		System.out.println("Enter Password");
 		String password = newReimbSc.nextLine();
 		int re_imb_auth = newUs.getUserRole(username, password);
+		
+		String username1 = newUDAO.authuenticateUser(username, password);
+		int userid = newUDAO.getUserId(username, password);
 		
 		System.out.println("Select reimbursement type");
 		System.out.println("1: lodging");
@@ -34,8 +40,8 @@ public class userReimbursement {
 		
 		int reimbus_id = newReS.maximumReimbId() + 1;
 		
-		Reimbursement newReqst = new Reimbursement();
-		newReqst.insertRemRq(amount  , re_imb_auth,  reimbId , reimbus_id);
+		AbstractReimbursement newReqst = new AbstractReimbursement(amount, userid, reimbId, reimbus_id);
+		newRe.insertRemRq(amount , userid,  reimbId , reimbus_id);
 
 		//System.out.println( reimbId + " " +  Name  + " "+ amount);
 		

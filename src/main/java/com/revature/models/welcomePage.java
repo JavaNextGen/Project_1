@@ -74,13 +74,16 @@ public class welcomePage {
       }
      
       String roleSearch =  newSearch.CheckUserRole(userinputU, userinputP);
-      System.out.println("roleSearch");
+      System.out.println(roleSearch);
       
-      if(roleSearch.toUpperCase().equals("EMPLOYEE")) 
+    if(roleSearch.toUpperCase().equals("EMPLOYEE")) 
+      //    if(roleSearch == 1)
     
     	newCheck.accessedByEmployee();
     	
-        if(roleSearch.toUpperCase().equals("FIN_MNGR")) 
+     if(roleSearch.toUpperCase().equals("FIN_MNGR")) 
+      //    if(roleSearch == 2)
+  
     	newCheck.accessedByManager();
    	
       

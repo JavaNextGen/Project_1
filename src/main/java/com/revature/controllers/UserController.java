@@ -3,24 +3,26 @@ package com.revature.controllers;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.revature.models.AbstractUser;
 import com.revature.models.User;
+import com.revature.models.userRegistration;
 import com.revature.services.UserService;
 
 import io.javalin.http.Handler;
 
 public class UserController {
 	
-	UserService es = new UserService();
+	UserService us = new UserService();
 
 	// *****This layer is where we'll parse our JSON into Java objects and vice vera*****
 	// Sits between the Javalin Front Controller and the Service Layer
 	// We'll either be getting data from the service layer (which is our DAO)
 	// ORR sending data to the service layer (will probably return some response that it was successful)
 	
-	public Handler getEmployeesHandler = (ctx) -> {
+	public Handler getUsersHandler = (ctx) -> {
 		if(ctx.req.getSession() != null) { //if the session exist
 			
-			List<User> allUsers = es.getNewUsers();
+			List<User> allUsers = us.getNewUsers();
 			
 			// Add the dependency into your pom.xml so it can import the Gson library
 			Gson gson = new Gson();
@@ -38,6 +40,7 @@ public class UserController {
 			ctx.status(404);
 		}
 	};
+	userRegistration newUsR = new userRegistration();
 	
 	public Handler insertUsersHandler = (ctx) -> {
 		
@@ -48,7 +51,9 @@ public class UserController {
 			
 			User newUser = gson.fromJson(body, User .class);
 			
-			es.registerNewUsers(newUser, newUser, 0, body);
+			AbstractUser newA = new AbstractUser();
+			
+			us.registerNewUsers(newUser,  newA, newUsR.userId, newUsR.role, newUsR.roleId );
 			
 			ctx.result("User was successfully added!");
 			ctx.status(201);

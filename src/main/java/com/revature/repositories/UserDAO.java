@@ -79,7 +79,7 @@ public class UserDAO {
 
     private User User(String string, String string2, String string3, String string4) {
 		// TODO Auto-generated method stub
-		return null;
+		return User(string, string, string, string);
 	}
 
 		
@@ -151,7 +151,7 @@ public class UserDAO {
     * ****************************
     */
    
-   public void registerNewUsers(User newUser, AbstractUser newUsA, int userroleid, String role) throws UsernameNotUniqueException
+   public void registerNewUsers(User newUser, AbstractUser newUsA, int userroleid, String role, int rolz) throws UsernameNotUniqueException
    {
 
       try{
@@ -184,7 +184,7 @@ public class UserDAO {
          newUserSt.setString(4, newUser.getFirstname());
          newUserSt.setString(5, newUser.getLastname());
          newUserSt.setString(6, newUser.getEmail());
-         newUserSt.setInt(7, userroleid);
+         newUserSt.setInt(7, rolz);
          newUserSt.setString(8, newUser.getAddress());
 	 
 
@@ -202,14 +202,10 @@ public class UserDAO {
 		}
          }
       
-   /*
-    * ****************************
-   * ****************************
-  */
+   
 
-
-	public String authuenticateUser(String name, String password) throws UsernameNotUniqueException {
-		String resultz = ""; 
+   public String authuenticateUser(String name, String password) {
+		String resultz = new String(); 
 
 			try {
 			Connection conn2 = ConnectionFactory.getConnection();
@@ -217,25 +213,27 @@ public class UserDAO {
 			ResultSet rs = null;	
 			Statement statement = conn2.createStatement();
 			
-			String sql = "SELECT ers_username FROM ers_users " +
+			String sql = "SELECT DISTINCT ers_username FROM ers_users " +
 			"WHERE ers_username = '"+name+"' AND ers_password= '"+password+"';";		
 			
 			rs = statement.executeQuery(sql);	
 
 			while(rs.next()) {
-				
 				resultz = rs.getString("ers_username");
 			}
 	
 			return resultz;
 
-		} catch (UsernameNotUniqueException | SQLException e) {
-			throw new RegistrationUnsuccessfulException("verification Unsuccessful");
+		} catch (SQLException e) {
 			
+			System.out.println(" employees LOGIN details not found!");
+			e.printStackTrace();
 		}
-		//	return resultz;
 
+	return resultz;
 }
+
+
 
 
 
@@ -245,13 +243,19 @@ public class UserDAO {
 		try {
 			Connection conn2 = ConnectionFactory.getConnection();
 			
-			ResultSet rs = null;	
-			Statement statement = conn2.createStatement();
+			ResultSet rs = null;
+			
+		
 			
 			String sql = "SELECT * FROM ers_users " +
-			"WHERE ers_username = '"+name+"';";		
+			"WHERE ers_username = ? ;";		
 			
-			rs = statement.executeQuery(sql);	
+			PreparedStatement ps = conn2.prepareStatement(sql);
+
+			ps.setString(1, name);	
+			
+			rs = ps.executeQuery(sql);		
+
 	
 			while(rs.next()) {
 
@@ -284,12 +288,17 @@ public List<AbstractUser> searchUserByNamePassword(String name, String password)
 			Connection conn2 = ConnectionFactory.getConnection();
 			
 			ResultSet rs = null;	
-			Statement statement = conn2.createStatement();
+		
 
 			String sql = "SELECT * FROM ers_users " +
-			"WHERE  ers_name = '"+name+"'  AND ers_password = "+password+"';";		
+			"WHERE  ers_name = ? AND ers_password = ? ;";		
+		
+			PreparedStatement ps = conn2.prepareStatement(sql);
+
+			ps.setString(1, name);		
+			ps.setString(2, password);
 			
-			rs = statement.executeQuery(sql);		
+			rs = ps.executeQuery(sql);		
 		
 			while(rs.next()) {
 				System.out.println(rs.getString("ers_username"));
@@ -323,12 +332,17 @@ public List<AbstractUser> searchUserByPassword(String password) {
 			Connection conn2 = ConnectionFactory.getConnection();
 			
 			ResultSet rs = null;	
-			Statement statement = conn2.createStatement();
-
+	
 			String sql = "SELECT * FROM urs_users " +
-			"WHERE ers_user_password = '"+password+"' ;";		
+			"WHERE ers_user_password = ? ;";		
+		
 			
-			rs = statement.executeQuery(sql);	
+			PreparedStatement ps = conn2.prepareStatement(sql);
+
+			ps.setString(1, password);	
+			
+			rs = ps.executeQuery(sql);
+			
 			
 			while(rs.next()) {
 				System.out.println(rs.getString("ers_username"));
@@ -358,11 +372,16 @@ public int maximumUserId() {
 		Connection conn2 = ConnectionFactory.getConnection();
 		
 		ResultSet rs = null;	
-		Statement statement = conn2.createStatement();
+	
 		
-		String sql = "SELECT max(ers_user_id) as Max_Id FROM ers_users;";		
+		String sql = "SELECT max(ers_user_id) as Max_Id FROM ers_users;";	
 		
-		rs = statement.executeQuery(sql);	
+		Statement ps = conn2.createStatement();
+
+		//PreparedStatement ps = conn2.prepareStatement(sql);
+		
+		rs = ps.executeQuery(sql);
+	
 
 		while(rs.next()) {
 			resultz = rs.getInt("Max_Id");
@@ -378,8 +397,8 @@ public int maximumUserId() {
 return resultz;
 }
 
-
-public String CheckUserRole(String name, String password) throws UsernameNotUniqueException {
+/*
+public String CheckUserRole(String username, String password) throws UsernameNotUniqueException {
 	String resultz = ""; 
 
 		try {
@@ -388,10 +407,11 @@ public String CheckUserRole(String name, String password) throws UsernameNotUniq
 		ResultSet rs = null;	
 		Statement statement = conn2.createStatement();
 		
-		String sql = "SELECT ers_role FROM ers_user_roles full join ers_users on " +
-				" ers_user_roles.ers_user_role_id =  ers_users.ers_role_id  " +
-		"WHERE ers_username = '"+name+"' AND ers_password= '"+password+"';";		
+		String sql = "SELECT ers_role FROM ers_user_roles AS ur inner join ers_users AS u on " +
+				" ur.ers_user_role_id = u.ers_role_id  " +
+				"WHERE ers_username = '"+username+"' AND ers_password= '"+password+"';";
 		
+
 		rs = statement.executeQuery(sql);	
 
 		while(rs.next()) {
@@ -404,9 +424,41 @@ public String CheckUserRole(String name, String password) throws UsernameNotUniq
 		throw new UsernameNotUniqueException("Something went wrong selecting employees!");
 	
 	}
+		return resultz;
+
 }
 
+*/
 
+public String CheckUserRole(String username, String password) throws UsernameNotUniqueException {
+	String resultz = ""; 
+
+		try {
+		Connection conn2 = ConnectionFactory.getConnection();
+		
+		ResultSet rs = null;	
+		Statement statement = conn2.createStatement();
+		
+		String sql = "SELECT user_role FROM ers_user_roles AS ur join ers_users AS u on " +
+				" ur.ers_user_role_id = u.ers_role_id  " +
+				"WHERE u.ers_username = '"+username+"' AND u.ers_password= '"+password+"';";
+	
+				
+		rs = statement.executeQuery(sql);	
+
+		while(rs.next()) {
+			resultz = rs.getString("user_role");
+		}
+
+		return resultz;
+
+	} catch ( SQLException e) {
+		System.out.println("Something went wrong verfying role!");
+	
+	}
+		return resultz;
+
+}
 
 public int getUserRole(String username, String password) {
 	int resultz = 0; 
@@ -439,6 +491,36 @@ return resultz;
 public void getByUserName(String name) {
 	// TODO Auto-generated method stub
 	
+}
+
+
+
+public int getUserId(String username, String password) {
+	int resultz = 0; 
+
+		try {
+		Connection conn2 = ConnectionFactory.getConnection();
+		
+		ResultSet rs = null;	
+		Statement statement = conn2.createStatement();
+		
+		String sql = "SELECT ers_user_id FROM ers_users " +
+		"WHERE ers_username = '"+username+"' AND ers_password= '"+password+"';";		
+		
+		rs = statement.executeQuery(sql);	
+
+		while(rs.next()) {
+			resultz = rs.getInt("ers_user_id");
+		}
+
+		return resultz;
+
+	} catch (SQLException e) {
+		System.out.println("Something went wrong selecting employees!");
+		e.printStackTrace();
+	}
+
+return resultz;
 }
 
 }
