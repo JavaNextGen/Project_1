@@ -1,8 +1,10 @@
 package com.revature;
 
+import java.security.AccessController;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import com.revature.controllers.AuthorizationController;
 import com.revature.controllers.ReimbursementController;
 import com.revature.controllers.UserController;
 import com.revature.models.welcomePage;
@@ -41,6 +43,7 @@ public class Driver {
 		
     	UserController uc = new UserController();
     ReimbursementController rc = new ReimbursementController();
+	AuthorizationController ac = new AuthorizationController();
 
 
 		
@@ -55,6 +58,8 @@ public class Driver {
 		
 		app.get("/Reimbursement", rc.getReimbursementHandler);
 		app.post("/Reimbursement", rc.insertReimbursementHandler);
+		
+		app.post("/login", ac.loginHandler);
 		
 		
 		}

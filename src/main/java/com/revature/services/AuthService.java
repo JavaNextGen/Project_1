@@ -18,6 +18,7 @@ import java.util.Optional;
  */
 public class AuthService {
 
+
     /**
      * <ul>
      *     <li>Needs to check for existing users with username/email provided.</li>
@@ -27,10 +28,7 @@ public class AuthService {
      *     <li>Must return user object if the user logs in successfully.</li>
      * </ul>
      */
-    public User login(String username, String password) {
-        return null;
-    }
-
+ 
     /**
      * <ul>
      *     <li>Should ensure that the username/email provided is unique.</li>
@@ -56,4 +54,21 @@ public class AuthService {
     public Optional<User> exampleRetrieveCurrentUser() {
         return Optional.empty();
     }
-}
+
+
+	
+		public boolean login(String username, String password) {
+			
+		
+			if(username.equals("user") && password.equals("password")) {
+				
+				return true;
+				
+			}
+			
+			return false; 
+			
+			
+		}
+		
+	}
