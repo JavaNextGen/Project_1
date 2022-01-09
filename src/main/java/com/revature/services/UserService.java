@@ -40,7 +40,10 @@ public class UserService {
 	
 	
 	public List<User> getNewUsers() {
-		return newAdd.getNewUsers();		
+		
+		List<User> users = newAdd.getNewUsers();
+	
+		return users;		
 	}
 
 	
