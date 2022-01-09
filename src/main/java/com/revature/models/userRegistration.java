@@ -10,12 +10,18 @@ import com.revature.services.UserService;
 
 public class userRegistration  {
 	
-
+	   public int roleId;
+	   public int userId ;
+	   public String role;
 
 
    //collect the username, password and role of new user while the database table will assign a user id
 	
    public void registerNewUsers() throws NewUserHasNonZeroIdException{
+	   
+	
+	   
+	   
 	      UserDAO newUsrService = new UserDAO();
 
 	try {  Scanner newUserSc = new Scanner(System.in);
@@ -47,7 +53,7 @@ public class userRegistration  {
       System.out.println("Enter address :");
       String address = newUserSc.nextLine();
      
-      int userId = newUsrService.maximumUserId() + 1;
+      userId = newUsrService.maximumUserId() + 1;
 System.out.println("user id =: "+ userId);
 System.out.println("****************************************************");
 
@@ -56,13 +62,13 @@ System.out.println("****************************************************");
       System.out.println("1 for employee");
       System.out.println("2 for finance manager");
 
-      int roleId = newUserSc.nextInt();
+       roleId = newUserSc.nextInt();
     //  newUserSc.close();
       //  generate new user object
-String role = "";
+       role = "";
 
       switch(roleId) {
-      case 1:role = "Employee";
+      case 1: role = "Employee";
       case 2: role = "Fin_Mngr";
     	  
       }
@@ -73,7 +79,7 @@ String role = "";
       //create a new user for the service layer
       
       newUsrService.getNewUsers();
-      newUsrService.registerNewUsers(newUser, newUsA, userId, role);
+      newUsrService.registerNewUsers(newUser, newUsA, userId, role, roleId);
       
 	}catch(NewUserHasNonZeroIdException e) {
 		throw new NewUserHasNonZeroIdException("Name does not exist");

@@ -49,7 +49,7 @@ public class Reimbursement {
     
     
         
-    public void insertRemRq(double amount , int user_id, int typeId , int reimbus_id){
+    public void insertRemRq(double amount , int author, int reimbid , int reimbus_id){
 
        try{
     	   Connection conn = ConnectionFactory.getConnection();
@@ -71,8 +71,8 @@ public class Reimbursement {
           PreparedStatement newUserSt = conn.prepareStatement(sql2);
           
           newUserSt.setInt(1, reimbus_id);
-          newUserSt.setInt(2, typeId);
-          newUserSt.setInt(3, user_id);
+          newUserSt.setInt(2, reimbid);
+          newUserSt.setInt(3, author);
           newUserSt.setDouble(4, amount);
          
           
@@ -148,10 +148,10 @@ public List<AbstractReimbursement> GetReimbursementsbyId(int reim_id) {
 				 
 				//result = Reim.getInt("reimb_id");
 				AbstractReimbursement newSearchA = new AbstractReimbursement(
+						Reim.getDouble("reimb_amount"),
+						Reim.getInt("reimb_Author"),
 						Reim.getInt("reimb_id"),
-						Reim.getInt("reimb_status_id"),
-						Reim.getString("reimb_Author"),
-						Reim.getDouble("reimb_amount")
+						Reim.getInt("reimb_status_id")
 						);
 						
 				searchReim.add(newSearchA);
@@ -187,11 +187,10 @@ public List<AbstractReimbursement> GetReimbursementsbyStatus(int reim_status) {
 				 
 					
 					AbstractReimbursement newSearchA = new AbstractReimbursement(
+							Reim.getDouble("reimb_amount"),
+							Reim.getInt("reimb_Author"),
 							Reim.getInt("reimb_id"),
-							Reim.getInt("reimb_status_id"),
-							Reim.getString("reimb_Author"),
-							Reim.getDouble("reimb_amount")
-		
+							Reim.getInt("reimb_status_id")
 							);
 							
 					searchReim.add(newSearchA);
@@ -228,11 +227,10 @@ public void GetReimbursementsAll2() {
 				 
 					
 					AbstractReimbursement newSearchA = new AbstractReimbursement(
+							Reim.getDouble("reimb_amount"),
+							Reim.getInt("reimb_Author"),
 							Reim.getInt("reimb_id"),
-							Reim.getInt("reimb_status_id"),
-							Reim.getString("reimb_Author"),
-							Reim.getDouble("reimb_amount")
-		
+							Reim.getInt("reimb_status_id")
 							);
 							
 					searchReim.add(newSearchA);
@@ -269,11 +267,10 @@ public List<AbstractReimbursement> GetReimbursementsAll() {
 				 
 					
 					AbstractReimbursement newSearchA = new AbstractReimbursement(
+							Reim.getDouble("reimb_amount"),
+							Reim.getInt("reimb_Author"),
 							Reim.getInt("reimb_id"),
-							Reim.getInt("reimb_status_id"),
-							Reim.getString("reimb_Author"),
-							Reim.getDouble("reimb_amount")
-		
+							Reim.getInt("reimb_status_id")
 							);
 							
 					searchReim.add(newSearchA);

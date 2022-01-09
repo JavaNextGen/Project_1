@@ -51,43 +51,46 @@ public class ReimbursementDAO {
      * */
     
     
-        
-    public void insertRemRq(double amount , int user_id, int typeId , int reimbus_id){
+    
+// public void insertRemRq(double amount , String author, int typeId , int reimbus_id){
+
+     
+  public void insertRemRq(AbstractReimbursement newRe){
 
        try{
     	   Connection conn = ConnectionFactory.getConnection();
     	   conn.setAutoCommit (false);
     	   
-          
-          
-    	   
-          String sql2 = "INSERT INTO ers_reimbursement(reimb_id, reimb_type_id, reimb_author, reimb_amount )"
-          				+ "VALUES(?, ?,?,?)";
-          				
-          PreparedStatement newUserSt = conn.prepareStatement(sql2);
-          
-          
+       
           
           String sql3 = "INSERT INTO ers_reimbursement_status(reimb_Status_id, reimb_Status )"
     				+ "VALUES(?,?)";
     				
           PreparedStatement newUserSt2 = conn.prepareStatement(sql3);
           
-          newUserSt2.setInt(1, reimbus_id );
+          newUserSt2.setInt(1, newRe.getNewid() );
           newUserSt2.setString(2, "PENDING");
           
-          newUserSt.setInt(1, reimbus_id);
-          newUserSt.setInt(2, typeId);
-          newUserSt.setInt(3, user_id);
-          newUserSt.setDouble(4, amount);
-         
           
-          newUserSt2.executeUpdate();   
+          String sql2 = "INSERT INTO ers_reimbursement(reimb_id, reimb_type_id, reimb_author, reimb_amount )"
+          				+ "VALUES(?, ?,?,?)";
+          				
+          PreparedStatement newUserSt = conn.prepareStatement(sql2);
+          
+          newUserSt.setInt(1, newRe.getId());
+          newUserSt.setInt(2, newRe.getNewid());
+          newUserSt.setInt(3, newRe.getId());
+          newUserSt.setDouble(4, newRe.getAmount());
+      
+          
           newUserSt.executeUpdate();
-       
+          
+     
+          newUserSt2.executeUpdate();   
+     
           conn.setAutoCommit (true);
 
-          System.out.println("New Reimb. Request for $" + amount + " was logged");
+          System.out.println("New Reimb. Request for $" + newRe.getAmount() + " was logged");
           }catch(Exception e) {
          //	 System.out.println("Unable to add new Request");
          	 e.printStackTrace();
@@ -154,11 +157,12 @@ public List<AbstractReimbursement> GetReimbursementsbyId(int reim_id) {
 				 
 				//result = Reim.getInt("reimb_id");
 				AbstractReimbursement newSearchA = new AbstractReimbursement(
+						Reim.getDouble("reimb_amount"),
+						Reim.getInt("reimb_Author"),
 						Reim.getInt("reimb_id"),
-						Reim.getInt("reimb_status_id"),
-						Reim.getString("reimb_Author"),
-						Reim.getDouble("reimb_amount")
+						Reim.getInt("reimb_status_id")
 						);
+						
 						
 				searchReim.add(newSearchA);
 			}
@@ -193,12 +197,13 @@ public List<AbstractReimbursement> GetReimbursementsbyStatus(int reim_status) {
 				 
 					
 					AbstractReimbursement newSearchA = new AbstractReimbursement(
+							Reim.getDouble("reimb_amount"),
+							Reim.getInt("reimb_Author"),
 							Reim.getInt("reimb_id"),
-							Reim.getInt("reimb_status_id"),
-							Reim.getString("reimb_Author"),
-							Reim.getDouble("reimb_amount")
-		
+							Reim.getInt("reimb_status_id")
 							);
+							
+							
 							
 					searchReim.add(newSearchA);
 				}
@@ -234,11 +239,10 @@ public void GetReimbursementsAll2() {
 				 
 					
 					AbstractReimbursement newSearchA = new AbstractReimbursement(
+							Reim.getDouble("reimb_amount"),
+							Reim.getInt("reimb_Author"),
 							Reim.getInt("reimb_id"),
-							Reim.getInt("reimb_status_id"),
-							Reim.getString("reimb_Author"),
-							Reim.getDouble("reimb_amount")
-		
+							Reim.getInt("reimb_status_id")
 							);
 							
 					searchReim.add(newSearchA);
@@ -275,12 +279,13 @@ public List<AbstractReimbursement> GetReimbursementsAll() {
 				 
 					
 					AbstractReimbursement newSearchA = new AbstractReimbursement(
+							Reim.getDouble("reimb_amount"),
+							Reim.getInt("reimb_Author"),
 							Reim.getInt("reimb_id"),
-							Reim.getInt("reimb_status_id"),
-							Reim.getString("reimb_Author"),
-							Reim.getDouble("reimb_amount")
-		
+							Reim.getInt("reimb_status_id")
 							);
+							
+							
 							
 					searchReim.add(newSearchA);
 				}
