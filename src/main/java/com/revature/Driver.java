@@ -59,7 +59,7 @@ public class Driver {
 		app.get("/Reimbursement", rc.getReimbursementHandler);
 		app.post("/Reimbursement", rc.insertReimbursementHandler);
 		
-		app.post("/login", ac.loginHandler);
+		app.get("/login", ac.loginHandler);
 		
 		
 		}
