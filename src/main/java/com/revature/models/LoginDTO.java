@@ -3,17 +3,15 @@ package com.revature.models;
 
 public class LoginDTO {
 
-	
-	//private String username;
-//	private String password;
-	
+	//our LoginDTO models ONLY the username/password of our users
 	private String username;
 	private String password;
 
+
 	public LoginDTO() {
 		super();
-			}
-
+		// TODO Auto-generated constructor stub
+	}
 
 	public LoginDTO(String username, String password) {
 		super();
@@ -42,6 +40,7 @@ public class LoginDTO {
 	}
 	
 
+	//toString just incase we want to print out the object (could be helpful for debug)
 	@Override
 	public String toString() {
 		return "LoginDTO [username=" + username + ", password=" + password + "]";

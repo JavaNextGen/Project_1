@@ -79,8 +79,8 @@ public class ReimbursementService {
 	   newReDAO.UpdateRemRq(newStatus, requst_id, newStatusId);
    }
 
-   public void GetReimbursementsbyStatus(int reim_id ) {
-      newReDAO.GetReimbursementsbyId(reim_id);
+   public List<AbstractReimbursement> GetReimbursementsbyStatus(int reim_id ) {
+      return newReDAO.GetReimbursementsbyId(reim_id);
    }
 
    public void GetReimbursementsAll2() {

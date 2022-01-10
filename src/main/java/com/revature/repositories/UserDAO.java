@@ -107,23 +107,16 @@ public class UserDAO {
     	  Connection conn = ConnectionFactory.getConnection();
     	  
          ResultSet userRs = null;
-/*
-        String sql1 = " SELECT ers_username, ers_password " +
-			"ers_first_name, ers_last_name, ers_email, ers_address " +
-                	       "ers_role_id FROM  ers_users;";
-*/
+
          String sql1 = " SELECT * FROM  ers_users;";
          
 
          Statement statement = conn.createStatement();
-
          userRs = statement.executeQuery(sql1);
 
          List<User> userlist = new ArrayList<>();
 
-         while(userRs.next()) {
-
-        	 
+         while(userRs.next()) {     	 
             User newuserDetails =  new User(
             	
                  	 userRs.getString("ers_username"),
@@ -146,6 +139,51 @@ public class UserDAO {
       }
       return null;
    }
+   
+
+
+	public List<User> searchUserByName(String name) {
+	
+		try {
+			Connection conn2 = ConnectionFactory.getConnection();
+			
+			ResultSet rs = null;
+	
+			
+			String sql = "SELECT * FROM ers_users " +
+			"WHERE ers_username = '"+name+"' ;";	
+			
+
+			Statement statement = conn2.createStatement();
+			rs = statement.executeQuery(sql);		
+
+			List<User> userSelect = new ArrayList<>();
+	
+			while(rs.next()) {
+
+			User newSearchP = new User(
+				
+			
+			rs.getString("ers_username"),
+			rs.getString("ers_password"),
+			rs.getString("ers_first_name"),
+			rs.getString("ers_last_name"),
+			rs.getString("ers_email"),
+			rs.getInt("ers_role_id"),
+			rs.getString("ers_address"));
+				
+				userSelect.add(newSearchP);
+			}
+					return userSelect;
+
+		} catch (SQLException e) {
+			System.out.println("Something went wrong selecting employees!");
+			e.printStackTrace();
+		}
+
+	return null;
+}
+ 
 
    /*
     * ****************************
@@ -232,49 +270,7 @@ public class UserDAO {
 
 	return resultz;
 }
-
-
-
-
-
-	public List<AbstractUser> searchUserByName(String name) {
-	List<AbstractUser> userSelect = new ArrayList<>();
-	
-		try {
-			Connection conn2 = ConnectionFactory.getConnection();
-			
-			ResultSet rs = null;
-			
-		
-			
-			String sql = "SELECT * FROM ers_users " +
-			"WHERE ers_username = ? ;";		
-			
-			PreparedStatement ps = conn2.prepareStatement(sql);
-
-			ps.setString(1, name);	
-			
-			rs = ps.executeQuery(sql);		
-
-	
-			while(rs.next()) {
-
-				AbstractUser newSearchP = new AbstractUser(
-					rs.getString("ers_username"),
-					rs.getString("ers_password"));
-				
-				userSelect.add(newSearchP);
-			}
-					return userSelect;
-
-		} catch (SQLException e) {
-			System.out.println("Something went wrong selecting employees!");
-			e.printStackTrace();
-		}
-
-	return null;
-}
-  
+ 
 
 /*
  * *************************************

@@ -178,7 +178,7 @@ public List<AbstractReimbursement> GetReimbursementsbyId(int reim_id) {
 
 
 
-public List<AbstractReimbursement> GetReimbursementsbyStatus(int reim_status) {
+public List<AbstractReimbursement> GetReimbursementsbyStatus(int reim_status_id) {
 	
 	try {
 			Connection conn2 = ConnectionFactory.getConnection();
@@ -187,7 +187,7 @@ public List<AbstractReimbursement> GetReimbursementsbyStatus(int reim_status) {
 			Statement statement = conn2.createStatement();
 
 			String sql = "SELECT reimb_id,reimb_status_id, reimb_Author,reimb_amount FROM ers_reimbursement " +
-			"WHERE reimb_status_id = '"+reim_status+"';";		
+			"WHERE reimb_status_id = '"+reim_status_id+"';";		
 			
 			Reim = statement.executeQuery(sql);	
 			

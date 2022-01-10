@@ -83,6 +83,11 @@ public int getUserId(String username, String password) {
 	      return newAdd.getUserRole(username, password);
 	   }
 
+	public List<User> searchUserByName(String username) {
+		  return newAdd.searchUserByName(username);	
+		  
+	}
+
 	   
 	  
   }

@@ -4,7 +4,7 @@ import java.security.AccessController;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import com.revature.controllers.AuthorizationController;
+import com.revature.controllers.AuthController;
 import com.revature.controllers.ReimbursementController;
 import com.revature.controllers.UserController;
 import com.revature.models.welcomePage;
@@ -43,7 +43,7 @@ public class Driver {
 		
     	UserController uc = new UserController();
     ReimbursementController rc = new ReimbursementController();
-	AuthorizationController ac = new AuthorizationController();
+	AuthController ac = new AuthController();
 
 
 		
@@ -54,10 +54,21 @@ public class Driver {
 				).start(3004);
 		
 		app.get("/user", uc.getUsersHandler);
-		app.post("/user", uc.insertUsersHandler);
+	
+		app.get("/user/{ers_username}", uc.getUserbyUsernamesHandler);
+		
+		
+	
 		
 		app.get("/Reimbursement", rc.getReimbursementHandler);
-		app.post("/Reimbursement", rc.insertReimbursementHandler);
+		app.get("/Reimbursement/{reimb_status_id}", rc.ReimbursementbyStatusIdntroller);
+		
+	//	app.post("/Reimbursement", rc.insertReimbursementHandler);
+		
+		
+		
+		app.get("/ReimByType", rc.getReimbursementHandler);
+		
 		
 		app.get("/login", ac.loginHandler);
 		

@@ -1,6 +1,7 @@
 package com.revature.controllers;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.google.gson.Gson;
 import com.revature.models.AbstractUser;
@@ -25,6 +26,26 @@ public class UserController {
 			String JSONUsers = gson.toJson(allUsers);
 			
 			ctx.result(JSONUsers);
+			ctx.status(200);			
+
+		} else {
+			ctx.result("Oh no you failed to get the employees!!!!");
+			ctx.status(404);
+		}
+	};
+
+	public Handler getUserbyUsernamesHandler = (ctx) -> {
+		if(ctx.req.getSession() != null) { //if the session exist
+			
+			 String ers_username = Objects.requireNonNull(ctx.pathParam("ers_username"));
+
+			List<User> allUsers = us.searchUserByName(ers_username);
+			
+			Gson gson = new Gson();
+			
+			String JSONUsers = gson.toJson(allUsers);
+			
+			ctx.result(JSONUsers);
 			ctx.status(200);
 			
 
@@ -33,6 +54,8 @@ public class UserController {
 			ctx.status(404);
 		}
 	};
+	
+	
 	
 	userRegistration newUsR = new userRegistration();
 	
