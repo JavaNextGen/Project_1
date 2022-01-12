@@ -39,10 +39,7 @@ public class User extends AbstractUser {
     private String address;
     
     private int roleId;
-    private int userId;
-    
-
-	public User(int id, String username, String password,  Role role) {
+    public User(int id, String username, String password,  Role role) {
 		super();
 	
 	}
@@ -69,7 +66,6 @@ public class User extends AbstractUser {
 		this.email = email;
 		this.address = address;
 		this.roleId = roleId;
-		this.userId = userId;
   	}
 
     public User(String username, String password, String firstname, String lastname, String email,  int roleId, String address) {

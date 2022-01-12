@@ -1,11 +1,13 @@
 package com.revature.models;
 
+import com.revature.repositories.UserDAO;
 
 public class LoginDTO {
 
+	UserDAO newU = new UserDAO();
 	//our LoginDTO models ONLY the username/password of our users
-	private String username;
-	private String password;
+	private String username ;
+	private String password ;
 
 
 	public LoginDTO() {
@@ -26,7 +28,7 @@ public class LoginDTO {
 
 
 	public void setUsername(String username) {
-		this.username = username;
+		this.username = newU.getByUserNameAU(username);
 	}
 
 
@@ -36,7 +38,7 @@ public class LoginDTO {
 
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = newU.getByPasswordAU(password);
 	}
 	
 

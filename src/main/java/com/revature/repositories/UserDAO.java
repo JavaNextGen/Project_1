@@ -4,7 +4,6 @@ import com.revature.models.User;
 
 import java.util.Optional;
 
-import com.revature.exceptions.RegistrationUnsuccessfulException;
 import com.revature.exceptions.UsernameNotUniqueException;
 import com.revature.models.AbstractUser;
 import com.revature.util.ConnectionFactory;
@@ -16,7 +15,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 
@@ -31,56 +29,44 @@ public class UserDAO {
      */
     public Optional<User> getByUsername(String username) {
     	
-    
-
-   // public List<User> searchUserByName(String name) {
-    	List<User> userSelect = new ArrayList<>();
+        List<User> userlist = new ArrayList<>();
     	
     		try {
     			Connection conn2 = ConnectionFactory.getConnection();
     			
-    			ResultSet rs = null;	
-    			Statement statement = conn2.createStatement();
+    			  ResultSet userRs = null;
+
+    		         String sql1 = " SELECT * FROM  ers_users;";
+    		         
+
+    		         Statement statement = conn2.createStatement();
+    		         userRs = statement.executeQuery(sql1);
+
+    		           		         while(userRs.next()) {     	 
+    		            User newuserDetails =  new User(
+    		            	
+    		                 	 userRs.getString("ers_username"),
+    		                     userRs.getString("ers_password"),
+    		               userRs.getString("ers_first_name"),
+    		               userRs.getString("ers_last_name"),
+    		               userRs.getString("ers_email"),
+    		             userRs.getInt("ers_role_id"),
+    		            userRs.getString("ers_address"));
     			
-    			String sql = "SELECT * FROM ers_users " +
-    			"WHERE ers_username = '"+username+"';";		
-    			
-    			rs = statement.executeQuery(sql);	
-    	
-    			while(rs.next()) {
+    		            userlist.add(newuserDetails);
+    		           		         }  
 
-    				User newSearchP = User(
-        					rs.getString("ers_first_name"),
-			//	rs.getInt("ers_newrole"),
-        					rs.getString("ers_last_name"),
+    		           	
+	} catch (SQLException e) {
+	System.out.println("Something went wrong selecting employees!");
+	e.printStackTrace();
+}  
+   			return Optional.empty();
 
-    					rs.getString("ers_email"),
-    					rs.getString("ers_address")
-    					
-
-    					);
-    				
-    				userSelect.add(newSearchP);
-
-    				}
-    						
-    					///return null;
-
-    		} catch (SQLException e) {
-    		System.out.println("Something went wrong selecting employees!");
-    		e.printStackTrace();
-    	}
-
-    //	return null;
-  //  }
-      
-        return Optional.empty();
+        
     }
-
-    private User User(String string, String string2, String string3, String string4) {
-		// TODO Auto-generated method stub
-		return User(string, string, string, string);
-	}
+    
+    
 
 		
 	/**
@@ -142,8 +128,49 @@ public class UserDAO {
    
 
 
-	public List<User> searchUserByName(String name) {
+	public List<User> getByUserName(String name) {
 	
+		try {
+			Connection conn2 = ConnectionFactory.getConnection();
+			
+			ResultSet rs = null;
+	
+			
+			String sql = "SELECT * FROM ers_users " +
+			"WHERE ers_username = '"+name+"' ;";	
+			
+
+			Statement statement = conn2.createStatement();
+			rs = statement.executeQuery(sql);		
+
+			List<User> userSelect = new ArrayList<>();
+	
+			while(rs.next()) {
+
+			User newSearchP = new User(
+				
+			
+			rs.getString("ers_username"),
+			rs.getString("ers_password"),
+			rs.getString("ers_first_name"),
+			rs.getString("ers_last_name"),
+			rs.getString("ers_email"),
+			rs.getInt("ers_role_id"),
+			rs.getString("ers_address"));
+				
+				userSelect.add(newSearchP);
+			}
+					return userSelect;
+
+		} catch (SQLException e) {
+			System.out.println("Something went wrong selecting employees!");
+			e.printStackTrace();
+		}
+
+	return null;
+}
+	public List<User> searchUserByName(String name) {
+		
 		try {
 			Connection conn2 = ConnectionFactory.getConnection();
 			
@@ -277,8 +304,8 @@ public class UserDAO {
  */
 	
 	
-public List<AbstractUser> searchUserByNamePassword(String name, String password) {
-	List<AbstractUser> userSelect = new ArrayList<>();
+public List<User> searchUserByNamePassword(String name, String password) {
+	List<User> userSelect = new ArrayList<>();
 	
 		try {
 			Connection conn2 = ConnectionFactory.getConnection();
@@ -298,13 +325,18 @@ public List<AbstractUser> searchUserByNamePassword(String name, String password)
 		
 			while(rs.next()) {
 				System.out.println(rs.getString("ers_username"));
-				
-				AbstractUser newSearchP = new AbstractUser(
-					rs.getString("ers_username"),
-					rs.getString("ers_password"));
-				
-				userSelect.add(newSearchP);
-				
+				User newSearchP = new User(
+						
+						
+						rs.getString("ers_username"),
+						rs.getString("ers_password"),
+						rs.getString("ers_first_name"),
+						rs.getString("ers_last_name"),
+						rs.getString("ers_email"),
+						rs.getInt("ers_role_id"),
+						rs.getString("ers_address"));
+							
+							userSelect.add(newSearchP);
 			}
 			
 			return userSelect;
@@ -321,8 +353,8 @@ public List<AbstractUser> searchUserByNamePassword(String name, String password)
  * ******************************
  */
 
-public List<AbstractUser> searchUserByPassword(String password) {
-	List<AbstractUser> userSelect = new ArrayList<>();
+public List<User> searchUserByPassword(String password) {
+	List<User> userSelect = new ArrayList<>();
 	
 		try {
 			Connection conn2 = ConnectionFactory.getConnection();
@@ -331,27 +363,26 @@ public List<AbstractUser> searchUserByPassword(String password) {
 	
 			String sql = "SELECT * FROM urs_users " +
 			"WHERE ers_user_password = ? ;";		
-		
-			
+	
 			PreparedStatement ps = conn2.prepareStatement(sql);
 
 			ps.setString(1, password);	
-			
 			rs = ps.executeQuery(sql);
-			
 			
 			while(rs.next()) {
 				System.out.println(rs.getString("ers_username"));
-				
-				AbstractUser newSearchI = new AbstractUser(
-					rs.getString("ers_username"),
-					rs.getString("ers_password"));
-			
-			userSelect.add(newSearchI);
-			}
-			System.out.println("Records were found, apply for ur reimbursement " + userSelect );
-
-			return userSelect;
+User newSearchP = new User(
+						rs.getString("ers_username"),
+						rs.getString("ers_password"),
+						rs.getString("ers_first_name"),
+						rs.getString("ers_last_name"),
+						rs.getString("ers_email"),
+						rs.getInt("ers_role_id"),
+						rs.getString("ers_address"));
+							
+							userSelect.add(newSearchP);
+		}		
+		return userSelect;
 			
 		} catch (SQLException e) {
 			System.out.println("Something went wrong selecting employees!");
@@ -393,38 +424,6 @@ public int maximumUserId() {
 return resultz;
 }
 
-/*
-public String CheckUserRole(String username, String password) throws UsernameNotUniqueException {
-	String resultz = ""; 
-
-		try {
-		Connection conn2 = ConnectionFactory.getConnection();
-		
-		ResultSet rs = null;	
-		Statement statement = conn2.createStatement();
-		
-		String sql = "SELECT ers_role FROM ers_user_roles AS ur inner join ers_users AS u on " +
-				" ur.ers_user_role_id = u.ers_role_id  " +
-				"WHERE ers_username = '"+username+"' AND ers_password= '"+password+"';";
-		
-
-		rs = statement.executeQuery(sql);	
-
-		while(rs.next()) {
-			resultz = rs.getString("ers_role");
-		}
-
-		return resultz;
-
-	} catch (UsernameNotUniqueException | SQLException e) {
-		throw new UsernameNotUniqueException("Something went wrong selecting employees!");
-	
-	}
-		return resultz;
-
-}
-
-*/
 
 public String CheckUserRole(String username, String password) throws UsernameNotUniqueException {
 	String resultz = ""; 
@@ -480,14 +479,66 @@ public int getUserRole(String username, String password) {
 		System.out.println("Something went wrong selecting employees!");
 		e.printStackTrace();
 	}
-
 return resultz;
 }
 
-public void getByUserName(String name) {
-	// TODO Auto-generated method stub
+
+public String getByUserNameAU(String username) {
+
+	String results = "";
+	try {
+		Connection conn2 = ConnectionFactory.getConnection();		
+		ResultSet rs = null;	
+		Statement statement = conn2.createStatement();
+
+
+		String sql = "SELECT ers_username FROM ers_users " +
+		"WHERE ers_username = '"+username+"' ;";		
+
+			rs = statement.executeQuery(sql);
+		
+		while(rs.next()) {
+			
+					results = rs.getString("ers_username");
+		
+		}
+		return results;
+		
+	} catch (SQLException e) {
+		System.out.println("Something went wrong selecting employees!");
+		e.printStackTrace();
+	}
+return results;
+	}
+
+
+public String getByPasswordAU(String password) {
 	
-}
+	String results = "";
+	try {
+		Connection conn2 = ConnectionFactory.getConnection();		
+		ResultSet rs = null;	
+		Statement statement = conn2.createStatement();
+
+		String sql = "SELECT ers_password FROM ers_users " +
+		"WHERE ers_password = '"+password+"';";		
+	
+		
+		rs = statement.executeQuery(sql);
+		
+		while(rs.next()) {
+			
+					results = rs.getString("ers_password");
+		
+		}
+		return results;
+		
+	} catch (SQLException e) {
+		System.out.println("Something went wrong selecting employees!");
+		e.printStackTrace();
+	}
+return results;
+	}
 
 
 

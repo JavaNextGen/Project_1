@@ -25,6 +25,9 @@ public class UserServiceTest {
 
     private User GENERIC_EMPLOYEE_1;
 
+    
+    
+    
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {

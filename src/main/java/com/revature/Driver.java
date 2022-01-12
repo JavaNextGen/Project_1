@@ -54,23 +54,24 @@ public class Driver {
 				).start(3004);
 		
 		app.get("/user", uc.getUsersHandler);
+		app.get("/usern/{ers_username}", uc.getUsernamesHandler);
 	
-		app.get("/user/{ers_username}", uc.getUserbyUsernamesHandler);
+		app.get("/userp/{ers_password}", uc.getPasswordHandler);
 		
 		
-	
+		app.post("/userinsert", uc.insertUsersHandler);
 		
 		app.get("/Reimbursement", rc.getReimbursementHandler);
 		app.get("/Reimbursement/{reimb_status_id}", rc.ReimbursementbyStatusIdntroller);
 		
-	//	app.post("/Reimbursement", rc.insertReimbursementHandler);
+		app.post("/Reimbursementinsert", rc.insertReimbursementHandler);
 		
 		
 		
 		app.get("/ReimByType", rc.getReimbursementHandler);
 		
 		
-		app.get("/login", ac.loginHandler);
+		app.get("/login/{ers_username}/{ers_password}", ac.loginHandler);
 		
 		
 		}

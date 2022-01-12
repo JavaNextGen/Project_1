@@ -2,6 +2,7 @@ package com.revature.services;
 
 import com.revature.models.User;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -57,10 +58,10 @@ public class AuthService {
 
 
 	
-		public boolean login(String username, String password) {
+		public boolean login(String username1, String password1, String username, String password) {
 			
 		
-			if(username.equals("user") && password.equals("password")) {
+			if(username1.equals(username) && password1.equals(password)) {
 				
 				return true;
 				
@@ -70,5 +71,6 @@ public class AuthService {
 			
 			
 		}
-		
+
+	
 	}

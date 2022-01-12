@@ -37,9 +37,9 @@ public class UserController {
 	public Handler getUserbyUsernamesHandler = (ctx) -> {
 		if(ctx.req.getSession() != null) { //if the session exist
 			
-			 String ers_username = Objects.requireNonNull(ctx.pathParam("ers_username"));
+			 String username = Objects.requireNonNull(ctx.pathParam("ers_firstname"));
 
-			List<User> allUsers = us.searchUserByName(ers_username);
+			List<User> allUsers = us.searchUserByName(username);
 			
 			Gson gson = new Gson();
 			
@@ -55,7 +55,47 @@ public class UserController {
 		}
 	};
 	
+	public Handler getUsernamesHandler = (ctx) -> {
+		if(ctx.req.getSession() != null) { //if the session exist
+			
+			 String Username = Objects.requireNonNull(ctx.pathParam("ers_username"));
+
+			String UserN = us.getByUserNameAU(Username);
+			
+			Gson gson = new Gson();
+			
+			String JSONUsers = gson.toJson(UserN);
+			
+			ctx.result(JSONUsers);
+			ctx.status(200);
+			
+
+		} else {
+			ctx.result("Oh no you failed to get the employees!!!!");
+			ctx.status(404);
+		}
+	};
 	
+	public Handler getPasswordHandler = (ctx) -> {
+		if(ctx.req.getSession() != null) { //if the session exist
+			
+			 String Password = Objects.requireNonNull(ctx.pathParam("ers_password"));
+
+			String passW = us.getByPasswordAU(Password);
+			
+			Gson gson = new Gson();
+			
+			String JSONUsers = gson.toJson(passW);
+			
+			ctx.result(JSONUsers);
+			ctx.status(200);
+			
+
+		} else {
+			ctx.result("Oh no you failed to get the employees!!!!");
+			ctx.status(404);
+		}
+	};
 	
 	userRegistration newUsR = new userRegistration();
 	

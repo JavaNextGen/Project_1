@@ -17,7 +17,11 @@ import com.revature.util.ConnectionFactory;
 
 public class Reimbursement {
 
-    /**
+    public Reimbursement(){
+  
+	}
+
+	/**
      * Should retrieve a Reimbursement from the DB with the corresponding id or an empty optional if there is no match.
      */
     public Optional<AbstractReimbursement> getById(int id) {

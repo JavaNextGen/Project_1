@@ -3,6 +3,9 @@ package com.revature.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.revature.exceptions.NewUserHasNonZeroIdException;
+import com.revature.exceptions.RegistrationUnsuccessfulException;
+import com.revature.exceptions.UsernameNotUniqueException;
 import com.revature.models.AbstractUser;
 import com.revature.models.User;
 import com.revature.repositories.UserDAO;
@@ -47,25 +50,48 @@ public class UserService {
 	}
 
 	
-	public void registerNewUsers(User newUser, AbstractUser newUsA, int useroleid, String  role, int rolz) {
-		newAdd.registerNewUsers(newUser, newUsA, useroleid, role, rolz);
+	public void registerNewUsers(User newUser, AbstractUser newUsA, int useroleid, String  role, int rolz) throws RegistrationUnsuccessfulException {
+		try{newAdd.registerNewUsers(newUser, newUsA, useroleid, role, rolz);
+		}catch(RegistrationUnsuccessfulException re) {
+			throw new RegistrationUnsuccessfulException();
+		}catch(Throwable te){
+			te.printStackTrace();  
+		}
 	}
 	
 	public void AuthenticateUser(String name, String password) {
+		//try {
 		newAdd.authuenticateUser(name, password);
-	}
+	//	}catch(){
+			
+	//	}
+		}
 
 
-	public void getByUserName(String name) {
-		newAdd.getByUserName(name);
-	}
+	/*public void getByUserName(String name) throws NewUserHasNonZeroIdException {
+		try {newAdd.getByUserName(name);
+		}catch(NewUserHasNonZeroIdException e) {
+			throw new NewUserHasNonZeroIdException(); 	
+		}catch(Throwable e) {
+			 e.printStackTrace();  
+		}
+	}*/
 	
+	public List<User> getByUserName(String name) throws NewUserHasNonZeroIdException {
+		try {newAdd.getByUserName(name);
+		}catch(NewUserHasNonZeroIdException e) {
+			throw new NewUserHasNonZeroIdException(); 	
+		}catch(Throwable e) {
+			 e.printStackTrace();  
+		}
+		return newAdd.getByUserName(name);
+	}
 	public void searchUserByNamePassword( String name, String password ) {
 		newAdd.searchUserByNamePassword(name, password);
 	}
 	
-	public void searchUserByPassword(String password) {
-		newAdd.searchUserByPassword(password);
+	public List<User> searchUserByPassword(String password) {
+		return newAdd.searchUserByPassword(password);
 	}
 
 	public int maximumUserId() {
@@ -86,13 +112,35 @@ public int getUserId(String username, String password) {
 	      return newAdd.getUserRole(username, password);
 	   }
 
-	public List<User> searchUserByName(String username) {
-		  return newAdd.searchUserByName(username);	
-		  
-	}
-
-	   
-	  
+	public List<User> searchUserByName(String name) throws  UsernameNotUniqueException {
+		 try { newAdd.searchUserByName(name);
+		 }catch(UsernameNotUniqueException ue) {
+			 throw new UsernameNotUniqueException();
+			 }catch(Throwable te) {
+			 te.printStackTrace();
+		 }
+		 return newAdd.searchUserByName(name);
+	}   
+	
+	public String getByUserNameAU(String username) throws  UsernameNotUniqueException {
+		 try { newAdd.searchUserByName(username);
+		 }catch(UsernameNotUniqueException ue) {
+			 throw new UsernameNotUniqueException();
+			 }catch(Throwable te) {
+			 te.printStackTrace();
+		 }
+		 return newAdd.getByUserNameAU(username);
+	}   
+	public String getByPasswordAU(String password) throws  UsernameNotUniqueException {
+		 try { newAdd.searchUserByName(password);
+		 }catch(UsernameNotUniqueException ue) {
+			 throw new UsernameNotUniqueException();
+			 }catch(Throwable te) {
+			 te.printStackTrace();
+		 }
+		 return newAdd.getByPasswordAU(password);
+	}   
+	
   }
 
 

@@ -31,6 +31,40 @@ public class ReimbursementDAO {
      * Should retrieve a List of Reimbursements from the DB with the corresponding Status or an empty List if there are no matches.
      */
     public List<Reimbursement> getByStatus(Status status) {
+    	try {
+			Connection conn2 = ConnectionFactory.getConnection();
+			
+			ResultSet Reim = null;	
+			Statement statement = conn2.createStatement();
+
+			String sql = "SELECT reimb_id,reimb_status_id, reimb_Author,reimb_amount FROM ers_reimbursement " +
+			"WHERE reimb_status_id = '"+status+"';";		
+			
+			Reim = statement.executeQuery(sql);	
+			
+			List<Reimbursement> searchReim = new ArrayList<>();
+
+			while(Reim.next()) {
+				 
+					
+					Reimbursement newSearchA = new Reimbursement(
+							Reim.getDouble("reimb_amount"),
+							Reim.getInt("reimb_Author"),
+							Reim.getInt("reimb_id"),
+							Reim.getInt("reimb_status_id")
+							);
+							
+							
+							
+					searchReim.add(newSearchA);
+				}
+				
+				return searchReim;
+			
+		} catch (SQLException e) {
+			System.out.println("unable to retrive infomation!");
+			e.printStackTrace();
+		}
         return Collections.emptyList();
     }
 
