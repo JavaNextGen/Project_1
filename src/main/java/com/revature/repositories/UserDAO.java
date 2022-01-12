@@ -130,45 +130,46 @@ public class UserDAO {
 
 	public List<User> getByUserName(String name) {
 	
-		try {
+		try{
 			Connection conn2 = ConnectionFactory.getConnection();
-			
-			ResultSet rs = null;
-	
-			
-			String sql = "SELECT * FROM ers_users " +
-			"WHERE ers_username = '"+name+"' ;";	
-			
+		
+		ResultSet rs = null;
 
-			Statement statement = conn2.createStatement();
-			rs = statement.executeQuery(sql);		
+		
+		String sql = "SELECT * FROM ers_users " +
+		"WHERE ers_username = '"+name+"' ;";	
+		
 
-			List<User> userSelect = new ArrayList<>();
-	
-			while(rs.next()) {
+		Statement statement = conn2.createStatement();
+		rs = statement.executeQuery(sql);		
 
-			User newSearchP = new User(
-				
+		List<User> userSelect = new ArrayList<>();
+
+		while(rs.next()) {
+
+		User newSearchP = new User(
 			
-			rs.getString("ers_username"),
-			rs.getString("ers_password"),
-			rs.getString("ers_first_name"),
-			rs.getString("ers_last_name"),
-			rs.getString("ers_email"),
-			rs.getInt("ers_role_id"),
-			rs.getString("ers_address"));
-				
-				userSelect.add(newSearchP);
-			}
-					return userSelect;
-
-		} catch (SQLException e) {
-			System.out.println("Something went wrong selecting employees!");
-			e.printStackTrace();
+		
+		rs.getString("ers_username"),
+		rs.getString("ers_password"),
+		rs.getString("ers_first_name"),
+		rs.getString("ers_last_name"),
+		rs.getString("ers_email"),
+		rs.getInt("ers_role_id"),
+		rs.getString("ers_address"));
+			
+			userSelect.add(newSearchP);
 		}
+				return userSelect;
 
-	return null;
-}
+	         
+	      }catch(Exception e) {
+				e.printStackTrace();
+	      }
+	      return null;
+	   }
+	
+	
 	public List<User> searchUserByName(String name) {
 		
 		try {

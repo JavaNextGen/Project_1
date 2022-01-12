@@ -77,7 +77,12 @@ public class UserService {
 		}
 	}*/
 	
-	public List<User> getByUserName(String name) throws NewUserHasNonZeroIdException {
+	public List<User> getByUserName(String name) {
+		return newAdd.getByUserName(name);
+	}
+	
+	/*
+	public List<User> getByUserName1(String name) throws NewUserHasNonZeroIdException {
 		try {newAdd.getByUserName(name);
 		}catch(NewUserHasNonZeroIdException e) {
 			throw new NewUserHasNonZeroIdException(); 	
@@ -86,6 +91,8 @@ public class UserService {
 		}
 		return newAdd.getByUserName(name);
 	}
+	*/
+	
 	public void searchUserByNamePassword( String name, String password ) {
 		newAdd.searchUserByNamePassword(name, password);
 	}
@@ -112,14 +119,14 @@ public int getUserId(String username, String password) {
 	      return newAdd.getUserRole(username, password);
 	   }
 
-	public List<User> searchUserByName(String name) throws  UsernameNotUniqueException {
-		 try { newAdd.searchUserByName(name);
+	public List<User> searchUserByName(String username) throws  UsernameNotUniqueException {
+		 try { newAdd.searchUserByName(username);
 		 }catch(UsernameNotUniqueException ue) {
 			 throw new UsernameNotUniqueException();
 			 }catch(Throwable te) {
 			 te.printStackTrace();
 		 }
-		 return newAdd.searchUserByName(name);
+		 return newAdd.searchUserByName(username);
 	}   
 	
 	public String getByUserNameAU(String username) throws  UsernameNotUniqueException {

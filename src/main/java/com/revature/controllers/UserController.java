@@ -37,9 +37,9 @@ public class UserController {
 	public Handler getUserbyUsernamesHandler = (ctx) -> {
 		if(ctx.req.getSession() != null) { //if the session exist
 			
-			 String username = Objects.requireNonNull(ctx.pathParam("ers_firstname"));
+			 String Username = Objects.requireNonNull(ctx.pathParam("ers_username"));
 
-			List<User> allUsers = us.searchUserByName(username);
+			List<User> allUsers = us.getByUserName(Username);
 			
 			Gson gson = new Gson();
 			

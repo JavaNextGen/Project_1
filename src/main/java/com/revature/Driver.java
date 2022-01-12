@@ -54,8 +54,9 @@ public class Driver {
 				).start(3004);
 		
 		app.get("/user", uc.getUsersHandler);
+		app.get("/user/{ers_username}", uc.getUserbyUsernamesHandler);
+		
 		app.get("/usern/{ers_username}", uc.getUsernamesHandler);
-	
 		app.get("/userp/{ers_password}", uc.getPasswordHandler);
 		
 		
